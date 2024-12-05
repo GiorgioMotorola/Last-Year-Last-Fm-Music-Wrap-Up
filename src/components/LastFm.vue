@@ -12,6 +12,11 @@
 
     <div v-if="error" class="error">{{ error }}</div>
 
+    <div v-if="earliestJanuaryTrack">
+      <h2>This song was one of the first tracks you played early in 2024: </h2>
+      <p>{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</p>
+    </div>
+
     <div v-if="firstTrack && lastTrack">
       <h2>You left 2024 behind listening to:</h2>
       <p>{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</p>
@@ -34,7 +39,7 @@
             <img :src="album.image" :alt="album.name" width="100" height="100" />
           </div>
           <div>
-             <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
+            <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
           </div>
         </li>
       </ol>
@@ -44,15 +49,16 @@
       <h2>Top 25 Tracks of 2024</h2>
       <ol>
         <li v-for="(track, index) in topTracks" :key="index">
-           {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
+          {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
         </li>
       </ol>
     </div>
+
   </div>
 </template>
 
 <script>
-import { getLastTrack, getTopArtistsForYear, getTopAlbumsForYear, getTopTracksForYear } from '@/lastfmService';
+import { getEarliestJanuaryTrack, getTopArtistsForYear, getTopAlbumsForYear, getTopTracksForYear, getLastTrack } from '@/lastfmService';
 
 export default {
   data() {
@@ -60,6 +66,7 @@ export default {
       username: '',
       firstTrack: null,
       lastTrack: null,
+      earliestJanuaryTrack: null,
       topArtists: [],
       topAlbums: [],
       topTracks: [],
@@ -71,6 +78,11 @@ export default {
       try {
         this.error = null;
         const year = 2024;
+
+        // Fetch the earliest January track
+        const earliestJanuaryTrack = await getEarliestJanuaryTrack(this.username);
+        this.earliestJanuaryTrack = earliestJanuaryTrack;
+
         const tracks = await getLastTrack(this.username, year);
         const artists = await getTopArtistsForYear(this.username);
         const albums = await getTopAlbumsForYear(this.username);
