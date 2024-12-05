@@ -31,4 +31,4 @@ coverage
 
 # .gitignore
 
-.config
+.config.js
