@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_KEY, API_URL } from './components/config'; 
+import { API_KEY, API_URL } from '../config'; 
 // tracks
 // add
 
