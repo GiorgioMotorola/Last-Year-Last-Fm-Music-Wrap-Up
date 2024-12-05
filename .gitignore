@@ -31,4 +31,4 @@ coverage
 
 # .gitignore
 
-.env
+.config
