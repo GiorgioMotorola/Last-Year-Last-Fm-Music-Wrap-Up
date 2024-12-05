@@ -1,59 +1,67 @@
 <template>
   <div>
-    <h1>LAST YEAR</h1>
-    <h2>Your Last Year in Music</h2>
-    <form @submit.prevent="fetchData">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" v-model="username" id="username" required />
+    <div class="entry-form" v-if="showForm">
+      <h1>LAST YEAR</h1>
+      <h2>Your Last Year in Music</h2>
+      <form @submit.prevent="fetchData">
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" v-model="username" id="username" required />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <div v-if="loading">
+      <p>Hang tight. We are digging for fire. </p>
+    </div>
+
+    <div v-if="showResults && !loading">
+      <div v-if="error" class="error">{{ error }}</div>
+
+      <div v-if="earliestJanuaryTrack">
+        <h2>One of the first songs you started your year with was: </h2>
+        <p>{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</p>
       </div>
-      <button type="submit">Submit</button>
-    </form>
 
-    <div v-if="error" class="error">{{ error }}</div>
+      <div v-if="firstTrack && lastTrack">
+        <h2>You left 2024 behind listening to:</h2>
+        <p>{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</p>
+      </div>
 
-    <div v-if="earliestJanuaryTrack">
-      <h2>This song was one of the first tracks you played early in 2024: </h2>
-      <p>{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</p>
+      <div v-if="topArtists.length">
+        <h2>Top 25 Artists of 2024</h2>
+        <ol>
+          <li v-for="(artist, index) in topArtists" :key="index">
+            {{ artist.name }} ({{ artist.playcount }} scrobbles)
+          </li>
+        </ol>
+      </div>
+
+      <div v-if="topAlbums.length">
+        <h2>Top 25 Albums of 2024</h2>
+        <ol>
+          <li v-for="(album, index) in topAlbums" :key="index">
+            <div>
+              <img :src="album.image" :alt="album.name" width="100" height="100" />
+            </div>
+            <div>
+              <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div v-if="topTracks.length">
+        <h2>Top 25 Tracks of 2024</h2>
+        <ol>
+          <li v-for="(track, index) in topTracks" :key="index">
+            {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
+          </li>
+        </ol>
+      </div>
+
     </div>
-
-    <div v-if="firstTrack && lastTrack">
-      <h2>You left 2024 behind listening to:</h2>
-      <p>{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</p>
-    </div>
-
-    <div v-if="topArtists.length">
-      <h2>Top 25 Artists of 2024</h2>
-      <ol>
-        <li v-for="(artist, index) in topArtists" :key="index">
-          {{ artist.name }} ({{ artist.playcount }} scrobbles)
-        </li>
-      </ol>
-    </div>
-
-    <div v-if="topAlbums.length">
-      <h2>Top 25 Albums of 2024</h2>
-      <ol>
-        <li v-for="(album, index) in topAlbums" :key="index">
-          <div>
-            <img :src="album.image" :alt="album.name" width="100" height="100" />
-          </div>
-          <div>
-            <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
-          </div>
-        </li>
-      </ol>
-    </div>
-
-    <div v-if="topTracks.length">
-      <h2>Top 25 Tracks of 2024</h2>
-      <ol>
-        <li v-for="(track, index) in topTracks" :key="index">
-          {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
-        </li>
-      </ol>
-    </div>
-
   </div>
 </template>
 
@@ -70,16 +78,21 @@ export default {
       topArtists: [],
       topAlbums: [],
       topTracks: [],
-      error: null
+      error: null,
+      loading: false,
+      showForm: true,
+      showResults: false
     };
   },
   methods: {
     async fetchData() {
       try {
         this.error = null;
+        this.loading = true;
+        this.showForm = false;
+
         const year = 2024;
 
-        // Fetch the earliest January track
         const earliestJanuaryTrack = await getEarliestJanuaryTrack(this.username);
         this.earliestJanuaryTrack = earliestJanuaryTrack;
 
@@ -137,6 +150,11 @@ export default {
       } catch (e) {
         console.error('Error fetching data:', e);
         this.error = 'An error occurred while fetching data. Please try again.';
+      } finally {
+        setTimeout(() => {
+          this.loading = false;
+          this.showResults = true;
+        }, 5000);
       }
     }
   }
@@ -164,5 +182,16 @@ ol li::before {
   content: counters(item, ".") ". ";
   font-weight: bold;
   margin-right: 10px;
+}
+
+.entry-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  vertical-align: center;
+  text-align: center;
 }
 </style>
