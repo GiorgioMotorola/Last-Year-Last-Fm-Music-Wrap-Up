@@ -1,67 +1,72 @@
 <template>
-  <div class="main">
-    <div class="entry-form" v-if="showForm">
-      <div class="title">LAST YEAR</div>
-      <div class="second-title">Your Last Year in Music</div>
-      <form @submit.prevent="fetchData">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" v-model="username" id="username" required />
+  <div class="container">
+    <div class="pause">
+      PAUSE &#9208;&#65039;
+    <div class="content main">
+      <div class="entry-form" v-if="showForm">
+        <div class="title">LAST YEAR</div>
+        <div class="second-title">Your Last Year in Music</div>
+        <form class="form" @submit.prevent="fetchData">
+          <div>
+            <label for="username">Username:</label>
+            <input type="text" v-model="username" id="username" required />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <div v-if="loading">
+        <div class="loading-screen">Hang tight. We are digging for fire.</div>
+      </div>
+
+      <div v-if="showResults && !loading">
+        <div v-if="error" class="error">{{ error }}</div>
+
+        <div class="early-track" v-if="earliestJanuaryTrack">
+          One of the first songs you started your year with was:
+          <div class="early-track-entry">{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</div>
         </div>
-        <button type="submit">Submit</button>
-      </form>
+
+        <div class="late-track" v-if="firstTrack && lastTrack">
+          You left 2024 behind listening to:
+          <div class="early-track-entry">{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</div>
+        </div>
+
+        <div class="top-artists" v-if="topArtists.length">
+          Top 25 Artists of 2024
+          <div class="artist-list">
+            <li v-for="(artist, index) in topArtists" :key="index">
+              {{ artist.name }} ({{ artist.playcount }} scrobbles)
+            </li>
+          </div>
+        </div>
+
+        <div class="top-albums" v-if="topAlbums.length">
+          Top 25 Albums of 2024
+          <div class="album-list">
+            <li v-for="(album, index) in topAlbums" :key="index">
+              <div class="album-image">
+                <img :src="album.image" :alt="album.name" width="250" height="250" />
+              </div>
+              <div>
+                <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
+              </div>
+            </li>
+          </div>
+        </div>
+
+        <div class="top-tracks" v-if="topTracks.length">
+          Top 25 Tracks of 2024
+          <div class="track-list">
+            <li v-for="(track, index) in topTracks" :key="index">
+              {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
+            </li>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div v-if="loading">
-      <div class="loading-screen">Hang tight. We are digging for fire. </div>
-    </div>
-
-    <div v-if="showResults && !loading">
-      <div v-if="error" class="error">{{ error }}</div>
-
-      <div class="early-track" v-if="earliestJanuaryTrack">
-        One of the first songs you started your year with was: 
-        <div class="early-track-entry">{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</div>
-      </div>
-
-      <div class="late-track" v-if="firstTrack && lastTrack">
-        You left 2024 behind listening to:
-        <div class="early-track-entry">{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</div>
-      </div>
-
-      <div class="top-artists" v-if="topArtists.length">
-        Top 25 Artists of 2024
-        <div class="artist-list">
-          <li v-for="(artist, index) in topArtists" :key="index">
-            {{ artist.name }} ({{ artist.playcount }} scrobbles)
-          </li>
-        </div>
-      </div>
-
-      <div class="top-albums" v-if="topAlbums.length">
-        Top 25 Albums of 2024
-        <div class="album-list">
-          <li v-for="(album, index) in topAlbums" :key="index">
-            <div>
-              <img :src="album.image" :alt="album.name" width="100" height="100" />
-            </div>
-            <div>
-              <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
-            </div>
-          </li>
-        </div>
-      </div>
-
-      <div class="top-tracks" v-if="topTracks.length">
-        Top 25 Tracks of 2024
-        <div class="track-list">
-          <li v-for="(track, index) in topTracks" :key="index">
-            {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
-          </li>
-        </div>
-      </div>
-
-    </div>
+    <div class="fuzzy-overlay"></div>
+  </div>
   </div>
 </template>
 
@@ -146,7 +151,6 @@ export default {
             this.error = 'No info found. Please check the username spelling and try again.';
           }
         }
-
       } catch (e) {
         console.error('Error fetching data:', e);
         this.error = 'An error occurred while fetching data. Please try again.';
@@ -162,10 +166,47 @@ export default {
 </script>
 
 <style scoped>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: black;
+  color: white;
+}
+
+.container {
+  position: relative;
+  overflow: hidden;
+  background-color: #232F9D;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  z-index: 10;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
 .title {
   color: aliceblue;
-  background-color: transparent
+  background-color: transparent;
+  font-size: 96px;
 }
 
 .error {
@@ -193,6 +234,10 @@ export default {
 .album-list {
   padding-left: 0;
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 }
 
 .album-list li {
@@ -200,12 +245,18 @@ export default {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 2%;
 }
 
 .album-list li::before {
   content: counters(item, ".") ". ";
   font-weight: bold;
   margin-right: 10px;
+}
+
+.album-image {
+  display: flex;
 }
 
 .track-list {
@@ -226,13 +277,6 @@ export default {
   margin-right: 10px;
 }
 
-/* .main {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  height: 100vh; 
-} */
-
 .entry-form {
   display: flex;
   flex-direction: column;
@@ -242,11 +286,40 @@ export default {
   padding: 10px;
   vertical-align: center;
   text-align: center;
-  background-color: rgb(185, 175, 175);
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  height: 100vh; 
+
+  justify-content: center;
+  height: 92.75vh;
+  z-index: 20;
+}
+
+.loading-screen {
+  text-align: center;
+  margin-top: 20px;
+  z-index: 20;
+}
+
+.fuzzy-overlay {
+  position: absolute;
+  inset: -200%;
+  background-image: url("../assets/noise.png");
+  opacity: 12%;
+  z-index: 5;
+  animation: shift .5s linear infinite both;
+}
+
+.pause {
+  font-size: 40px;
+  color: azure;
+  padding: .5%;
+}
+
+@keyframes shift {
+  0% {
+    transform: translateX(10%) translateY(10%);
+  }
+
+  100% {
+    transform: translateX(-10%) translateY(-10%);
+  }
 }
 </style>
