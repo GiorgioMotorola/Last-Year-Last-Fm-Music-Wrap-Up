@@ -1,22 +1,23 @@
 <template>
   <div class="container">
     <div class="pause">
-      PAUSE &#9208;&#65039;
+      PAUSE&#9208;
+      </div>
     <div class="content main">
       <div class="entry-form" v-if="showForm">
         <div class="title">LAST YEAR</div>
-        <div class="second-title">Your Last Year in Music</div>
+        <div class="second-title">YOUR LAST YEAR IN MUSIC ON <span style="color: #DC1B22;">LAST.FM</span></div>
         <form class="form" @submit.prevent="fetchData">
-          <div>
-            <label for="username">Username:</label>
+          <div class="form">
+            <label for="username">ENTER YOUR LAST.FM USERNAME:</label>
             <input type="text" v-model="username" id="username" required />
           </div>
-          <button type="submit">Submit</button>
+          <button class="submit" type="submit">SUBMIT</button>
         </form>
       </div>
 
       <div v-if="loading">
-        <div class="loading-screen">Hang tight. We are digging for fire.</div>
+        <div class="loading-screen">&#9198;</div>
       </div>
 
       <div v-if="showResults && !loading">
@@ -66,7 +67,6 @@
       </div>
     </div>
     <div class="fuzzy-overlay"></div>
-  </div>
   </div>
 </template>
 
@@ -209,6 +209,11 @@ body {
   font-size: 96px;
 }
 
+.second-title {
+  color: aliceblue;
+  font-size: 30px;
+}
+
 .error {
   color: red;
 }
@@ -283,12 +288,11 @@ body {
   align-items: center;
   margin: auto;
   width: 50%;
-  padding: 10px;
+  /* padding: 10px; */
   vertical-align: center;
   text-align: center;
-
   justify-content: center;
-  height: 92.75vh;
+  height: 95vh;
   z-index: 20;
 }
 
@@ -296,6 +300,9 @@ body {
   text-align: center;
   margin-top: 20px;
   z-index: 20;
+  height: 95vh;
+  font-size: 70px;
+  color: white;
 }
 
 .fuzzy-overlay {
@@ -308,10 +315,32 @@ body {
 }
 
 .pause {
-  font-size: 40px;
-  color: azure;
+  font-size: 60px;
+  color: rgb(255, 255, 255);
   padding: .5%;
 }
+
+.form {
+  color: aliceblue;
+}
+
+input[type="text"] {
+  width: 100%; 
+  height: 40px; 
+  padding: 10px; 
+  font-size: 30px; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  box-sizing: border-box; 
+  display: flex;
+}
+
+.submit {
+  font-size: 30px;
+  border-radius: 5px;
+  padding: 1%;
+}
+
 
 @keyframes shift {
   0% {
