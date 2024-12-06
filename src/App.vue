@@ -6,6 +6,7 @@
 
 <script>
 import LastFm from './components/LastFm.vue';
+import './assets/base.css';
 
 export default {
   name: 'App',

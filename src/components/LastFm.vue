@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="main">
     <div class="entry-form" v-if="showForm">
-      <h1>LAST YEAR</h1>
-      <h2>Your Last Year in Music</h2>
+      <div class="title">LAST YEAR</div>
+      <div class="second-title">Your Last Year in Music</div>
       <form @submit.prevent="fetchData">
         <div>
           <label for="username">Username:</label>
@@ -13,34 +13,34 @@
     </div>
 
     <div v-if="loading">
-      <p>Hang tight. We are digging for fire. </p>
+      <div class="loading-screen">Hang tight. We are digging for fire. </div>
     </div>
 
     <div v-if="showResults && !loading">
       <div v-if="error" class="error">{{ error }}</div>
 
-      <div v-if="earliestJanuaryTrack">
-        <h2>One of the first songs you started your year with was: </h2>
-        <p>{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</p>
+      <div class="early-track" v-if="earliestJanuaryTrack">
+        One of the first songs you started your year with was: 
+        <div class="early-track-entry">{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</div>
       </div>
 
-      <div v-if="firstTrack && lastTrack">
-        <h2>You left 2024 behind listening to:</h2>
-        <p>{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</p>
+      <div class="late-track" v-if="firstTrack && lastTrack">
+        You left 2024 behind listening to:
+        <div class="early-track-entry">{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</div>
       </div>
 
-      <div v-if="topArtists.length">
-        <h2>Top 25 Artists of 2024</h2>
-        <ol>
+      <div class="top-artists" v-if="topArtists.length">
+        Top 25 Artists of 2024
+        <div class="artist-list">
           <li v-for="(artist, index) in topArtists" :key="index">
             {{ artist.name }} ({{ artist.playcount }} scrobbles)
           </li>
-        </ol>
+        </div>
       </div>
 
-      <div v-if="topAlbums.length">
-        <h2>Top 25 Albums of 2024</h2>
-        <ol>
+      <div class="top-albums" v-if="topAlbums.length">
+        Top 25 Albums of 2024
+        <div class="album-list">
           <li v-for="(album, index) in topAlbums" :key="index">
             <div>
               <img :src="album.image" :alt="album.name" width="100" height="100" />
@@ -49,16 +49,16 @@
               <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
             </div>
           </li>
-        </ol>
+        </div>
       </div>
 
-      <div v-if="topTracks.length">
-        <h2>Top 25 Tracks of 2024</h2>
-        <ol>
+      <div class="top-tracks" v-if="topTracks.length">
+        Top 25 Tracks of 2024
+        <div class="track-list">
           <li v-for="(track, index) in topTracks" :key="index">
             {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
           </li>
-        </ol>
+        </div>
       </div>
 
     </div>
@@ -162,27 +162,76 @@ export default {
 </script>
 
 <style scoped>
+
+.title {
+  color: aliceblue;
+  background-color: transparent
+}
+
 .error {
   color: red;
 }
 
-ol {
+.artist-list {
   padding-left: 0;
   list-style: none;
 }
 
-ol li {
+.artist-list li {
   counter-increment: item;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
 
-ol li::before {
+.artist-list li::before {
   content: counters(item, ".") ". ";
   font-weight: bold;
   margin-right: 10px;
 }
+
+.album-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.album-list li {
+  counter-increment: item;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.album-list li::before {
+  content: counters(item, ".") ". ";
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.track-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.track-list li {
+  counter-increment: item;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.track-list li::before {
+  content: counters(item, ".") ". ";
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* .main {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+} */
 
 .entry-form {
   display: flex;
@@ -193,5 +242,11 @@ ol li::before {
   padding: 10px;
   vertical-align: center;
   text-align: center;
+  background-color: rgb(185, 175, 175);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
 }
 </style>
