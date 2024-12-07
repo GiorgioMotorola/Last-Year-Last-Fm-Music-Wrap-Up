@@ -9,8 +9,9 @@ export const getLastTrack = async (username, year) => {
   const fromTimestamp = new Date(`${year}-01-01T00:00:00Z`).getTime() / 1000;
   const toTimestamp = new Date(`${year}-12-31T23:59:59Z`).getTime() / 1000;
 
-  const url = `${API_URL}?method=user.getRecentTracks&user=${username}&from=${fromTimestamp}&to=${toTimestamp}&api_key=${API_KEY}&format=json&limit=200`;
-
+  const url = `${API_URL}?method=user.getRecentTracks&user=apoc&from=1704067200&to=1735689599&api_key=${API_KEY}&format=json&limit=200`;
+  console.log('Fetching data from:', url);
+  
   try {
     const response = await fetch(url);
     const data = await response.json();
