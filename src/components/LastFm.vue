@@ -508,13 +508,13 @@ font-size: 20px;
 .top-right-text {
   top: 10px;
   right: 20px;
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(208, 212, 216);
   z-index: 20;
 }
 
 .rewind {
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(208, 212, 216);
   padding: .5%;
   animation: blink .00001s infinite;
@@ -522,7 +522,7 @@ font-size: 20px;
 
 
 .play {
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(208, 212, 216);
   padding: .5%;
 }
@@ -530,31 +530,31 @@ font-size: 20px;
 .loading-screen {
   height: 100vh;
   padding-top: 60%;
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .top-tracks {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .track-list {
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .top-artists {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .artist-list {
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .top-albums {
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .album-list {
-  font-size: 15px;
+  font-size: 13px;
 }
 
 
