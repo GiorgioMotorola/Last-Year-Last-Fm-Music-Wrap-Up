@@ -107,36 +107,36 @@ export const getTopTracksForYear = async (username) => {
   }
 };
   
-export const getEarliestJanuaryTrack = async (username) => {
-  const fromTimestamp = new Date('2024-01-01T00:00:00Z').getTime() / 1000;
-  const toTimestamp = new Date('2024-01-31T23:59:59Z').getTime() / 1000;
+// export const getEarliestJanuaryTrack = async (username) => {
+//   const fromTimestamp = new Date('2024-01-01T00:00:00Z').getTime() / 1000;
+//   const toTimestamp = new Date('2024-01-31T23:59:59Z').getTime() / 1000;
 
-  try {
-    const response = await axios.get(API_URL, {
-      params: {
-        method: 'user.getRecentTracks',
-        user: username,
-        from: fromTimestamp,
-        to: toTimestamp,
-        api_key: API_KEY,
-        format: 'json',
-        limit: 200
-      }
-    });
+//   try {
+//     const response = await axios.get(API_URL, {
+//       params: {
+//         method: 'user.getRecentTracks',
+//         user: username,
+//         from: fromTimestamp,
+//         to: toTimestamp,
+//         api_key: API_KEY,
+//         format: 'json',
+//         limit: 200
+//       }
+//     });
 
-    const tracks = response.data.recenttracks.track;
+//     const tracks = response.data.recenttracks.track;
 
-    if (tracks.length > 0) {
-      const earliestTrack = tracks.reduce((earliest, current) => {
-        return new Date(current.date.uts * 1000) < new Date(earliest.date.uts * 1000) ? current : earliest;
-      }, tracks[0]);
-      return earliestTrack;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.error('Error fetching tracks:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-};
+//     if (tracks.length > 0) {
+//       const earliestTrack = tracks.reduce((earliest, current) => {
+//         return new Date(current.date.uts * 1000) < new Date(earliest.date.uts * 1000) ? current : earliest;
+//       }, tracks[0]);
+//       return earliestTrack;
+//     } else {
+//       return null;
+//     }
+//   } catch (error) {
+//     console.error('Error fetching tracks:', error.response ? error.response.data : error.message);
+//     throw error;
+//   }
+// };
   

@@ -1,19 +1,20 @@
 <template>
   <div class="container">
-    <div class="pause">
-      PAUSE&#9208;
-      </div>
+    <div v-if="!loading && !showResults" class="pause">PAUSE&#9208;</div>
+    <div class="status">
+      <div v-if="loading" class="rewind">REWIND &#9198;</div>
+      <div v-if="showResults && !loading" class="play">PLAY &#9654;</div>
+      <div class="top-right-text">{{ formattedTime }}</div>
+    </div>
     <div class="content main">
       <div class="entry-form" v-if="showForm">
         <div class="title">LAST YEAR</div>
         <div class="second-title">YOUR LAST YEAR IN MUSIC ON <span style="color: #DC1B22;">LAST.FM</span></div>
-        <form class="form" @submit.prevent="fetchData">
-          <div class="form">
-            <label for="username">ENTER YOUR LAST.FM USERNAME:</label>
-            <input type="text" v-model="username" id="username" required />
-          </div>
-          <button class="submit" type="submit">SUBMIT</button>
-        </form>
+        <div class="form" @submit.prevent="fetchData">
+          <label for="username"></label>
+          <input type="text" v-model="username" id="username" required placeholder="type in your last.fm username and press enter" @keyup.enter="fetchData" />
+          <button class="submit" type="submit">&#9198;</button>
+        </div>
       </div>
 
       <div v-if="loading">
@@ -23,10 +24,10 @@
       <div v-if="showResults && !loading">
         <div v-if="error" class="error">{{ error }}</div>
 
-        <div class="early-track" v-if="earliestJanuaryTrack">
+        <!-- <div class="early-track" v-if="earliestJanuaryTrack">
           One of the first songs you started your year with was:
           <div class="early-track-entry">{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</div>
-        </div>
+        </div> -->
 
         <div class="late-track" v-if="firstTrack && lastTrack">
           You left 2024 behind listening to:
@@ -70,8 +71,10 @@
   </div>
 </template>
 
+
+
 <script>
-import { getEarliestJanuaryTrack, getTopArtistsForYear, getTopAlbumsForYear, getTopTracksForYear, getLastTrack } from '@/lastfmService';
+import { getTopArtistsForYear, getTopAlbumsForYear, getTopTracksForYear, getLastTrack } from '@/lastfmService';
 
 export default {
   data() {
@@ -86,20 +89,51 @@ export default {
       error: null,
       loading: false,
       showForm: true,
-      showResults: false
+      showResults: false,
+      interval: null,
+      time: 0
     };
   },
+  computed: {
+    formattedTime() {
+      const date = new Date(this.time * 1000);
+      const hours = String(date.getUTCHours()).padStart(2, '0');
+      const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+      const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
+    }
+  },
   methods: {
+    startCountdown() {
+      this.time = 3600; 
+      this.interval = setInterval(() => {
+        if (this.time > 0) {
+          this.time -= 1 / 1; 
+        } else {
+          clearInterval(this.interval);
+        }
+      }, 1000 / 60); 
+    },
+    startCountup() {
+      this.time = 0; 
+      this.interval = setInterval(() => {
+        this.time += 1 / 60; 
+      }, 1000 / 60); 
+    },
+    stopTimer() {
+      if (this.interval) {
+        clearInterval(this.interval);
+      }
+    },
     async fetchData() {
       try {
         this.error = null;
         this.loading = true;
         this.showForm = false;
+        this.stopTimer();
+        this.startCountdown();
 
         const year = 2024;
-
-        const earliestJanuaryTrack = await getEarliestJanuaryTrack(this.username);
-        this.earliestJanuaryTrack = earliestJanuaryTrack;
 
         const tracks = await getLastTrack(this.username, year);
         const artists = await getTopArtistsForYear(this.username);
@@ -158,9 +192,14 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.showResults = true;
+          this.stopTimer();
+          this.startCountup();
         }, 5000);
       }
     }
+  },
+  beforeDestroy() {
+    this.stopTimer();
   }
 };
 </script>
@@ -181,11 +220,6 @@ html, body {
   padding: 0;
 }
 
-body {
-  background: black;
-  color: white;
-}
-
 .container {
   position: relative;
   overflow: hidden;
@@ -204,14 +238,16 @@ body {
 }
 
 .title {
-  color: aliceblue;
+  color: rgb(208, 212, 216);
   background-color: transparent;
   font-size: 96px;
+  margin-top: 10px;
 }
 
 .second-title {
-  color: aliceblue;
+  color: rgb(208, 212, 216);
   font-size: 30px;
+  margin-bottom: 25%;
 }
 
 .error {
@@ -283,9 +319,6 @@ body {
 }
 
 .entry-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin: auto;
   width: 50%;
   /* padding: 10px; */
@@ -302,7 +335,7 @@ body {
   z-index: 20;
   height: 95vh;
   font-size: 70px;
-  color: white;
+  color: rgb(208, 212, 216);
 }
 
 .fuzzy-overlay {
@@ -316,29 +349,54 @@ body {
 
 .pause {
   font-size: 60px;
-  color: rgb(255, 255, 255);
+  color: rgb(208, 212, 216);
+  padding: .5%;
+  animation: blink 2s infinite;
+}
+
+.rewind {
+  font-size: 60px;
+  color: rgb(208, 212, 216);
   padding: .5%;
 }
 
-.form {
-  color: aliceblue;
+.play {
+  font-size: 60px;
+  color: rgb(208, 212, 216);
+  padding: .5%;
 }
 
+.top-right-text {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 60px;
+  color: rgb(208, 212, 216);
+  z-index: 20;
+}
+
+
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
 input[type="text"] {
-  width: 100%; 
+  width: 50%; 
   height: 40px; 
   padding: 10px; 
-  font-size: 30px; 
-  border: 1px solid #ccc; 
+  font-size: 20px; 
+  text-align: center;
+  border: 1px solid rgb(208, 212, 216);
   border-radius: 5px; 
   box-sizing: border-box; 
-  display: flex;
 }
 
 .submit {
-  font-size: 30px;
-  border-radius: 5px;
-  padding: 1%;
+  display:none;
 }
 
 
