@@ -262,6 +262,14 @@ html, body {
   color: red;
 }
 
+.top-artists {
+  font-size: 60px;
+  color: rgb(255, 255, 255);
+  margin-top: 3%;
+  text-transform: uppercase;
+  text-align: end;
+}
+
 .artist-list {
   padding-left: 0;
   list-style: none;
@@ -284,13 +292,6 @@ html, body {
   margin-right: 10px;
 }
 
-.top-artists {
-  font-size: 60px;
-  color: rgb(255, 255, 255);
-  margin-top: 3%;
-  text-transform: uppercase;
-  text-align: end;
-}
 
 .top-albums {
   font-size: 60px;
@@ -307,7 +308,6 @@ html, body {
   font-size: 45px;
   margin-top: 3%;
   padding: 1%;
-
 }
 
 .album-list li {
@@ -532,6 +532,31 @@ font-size: 20px;
   padding-top: 60%;
   font-size: 40px;
 }
+
+.top-tracks {
+  font-size: 25px;
+}
+
+.track-list {
+  font-size: 15px;
+}
+
+.top-artists {
+  font-size: 25px;
+}
+
+.artist-list {
+  font-size: 15px;
+}
+
+.top-albums {
+  font-size: 25px;
+}
+
+.album-list {
+  font-size: 15px;
+}
+
 
 
 }
