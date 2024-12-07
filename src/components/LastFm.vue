@@ -221,34 +221,6 @@ export default {
   padding: 0;
 }
 
-*{
-    margin: 0;
-}
-
-body::-webkit-scrollbar {
-    width: .1em;
-  }
-   
-  body::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.3);
-  }
-   
-  body::-webkit-scrollbar-thumb {
-    background-color: #232F9D;
-    outline: 1px solid #232F9D;
-  }
-
-  @font-face {
-    font-family: 'VCR OSD Mono';
-    src: url('./src/assets/VCR_OSD_MONO_1.001.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  body {
-    font-family: 'VCR OSD Mono', monospace;
-  }
-
 html, body {
   width: 100%;
   height: 100%;

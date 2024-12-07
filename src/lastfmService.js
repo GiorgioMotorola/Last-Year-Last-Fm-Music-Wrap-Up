@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { API_KEY, API_URL } from '../config'; 
+import VcrOsdMono from '/VCR_OSD_MONO_1.001.ttf';
 
+// Example usage in JavaScript if needed
+const fontFace = new FontFace('VCR OSD Mono', `url(${VcrOsdMono})`);
+document.fonts.add(fontFace);
 // tracks
 // add
 

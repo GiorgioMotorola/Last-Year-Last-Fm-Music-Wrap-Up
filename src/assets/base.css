@@ -17,7 +17,7 @@ body::-webkit-scrollbar {
 
   @font-face {
     font-family: 'VCR OSD Mono';
-    src: url('./src/assets/VCR_OSD_MONO_1.001.ttf') format('truetype');
+    src: url('/VCR_OSD_MONO_1.001.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
   }
