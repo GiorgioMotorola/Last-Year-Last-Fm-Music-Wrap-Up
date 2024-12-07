@@ -481,4 +481,59 @@ input[type="text"] {
     transform: translateX(-10%) translateY(-10%);
   }
 }
+
+@media screen and (max-width: 600px) {
+
+  .title {
+  font-size: 50px;
+  margin-top: 75%;
+}
+
+.second-title {
+  font-size: 15px;
+  margin-top: 7%;
+  margin-bottom: 25%;
+}
+
+input[type="text"] {
+
+width: 100%;
+font-size: 20px;     
+}
+
+.pause {
+  font-size: 40px;
+}
+
+.top-right-text {
+  top: 10px;
+  right: 20px;
+  font-size: 40px;
+  color: rgb(208, 212, 216);
+  z-index: 20;
+}
+
+.rewind {
+  font-size: 40px;
+  color: rgb(208, 212, 216);
+  padding: .5%;
+  animation: blink .00001s infinite;
+}
+
+
+.play {
+  font-size: 40px;
+  color: rgb(208, 212, 216);
+  padding: .5%;
+}
+
+.loading-screen {
+  height: 100vh;
+  padding-top: 60%;
+  font-size: 40px;
+}
+
+
+}
+
 </style>
