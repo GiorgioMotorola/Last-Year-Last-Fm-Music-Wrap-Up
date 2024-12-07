@@ -12,13 +12,13 @@
         <div class="second-title">YOUR LAST YEAR IN MUSIC ON <span style="color: #DC1B22;">LAST.FM</span></div>
         <div class="form" @submit.prevent="fetchData">
           <label for="username"></label>
-          <input type="text" v-model="username" id="username" required placeholder="type in your last.fm username and press enter" @keyup.enter="fetchData" />
+          <input type="text" v-model="username" id="username" required placeholder="enter a last.fm username" @keyup.enter="fetchData" />
           <button class="submit" type="submit">&#9198;</button>
         </div>
       </div>
 
       <div v-if="loading">
-        <div class="loading-screen">&#9198;</div>
+        <div class="loading-screen">HANG ON TIGHT. WE ARE DIGGING FOR FIRE</div>
       </div>
 
       <div v-if="showResults && !loading">
@@ -29,42 +29,50 @@
           <div class="early-track-entry">{{ earliestJanuaryTrack.name }} by {{ earliestJanuaryTrack.artist['#text'] }}</div>
         </div> -->
 
-        <div class="late-track" v-if="firstTrack && lastTrack">
-          You left 2024 behind listening to:
-          <div class="early-track-entry">{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</div>
+        <div class="top-tracks" v-if="topTracks.length">
+          TOP 25 TRACKS OF 2024 FOR {{ this.username }}
+          <div class="track-list">
+            <li v-for="(track, index) in topTracks" :key="index">
+              {{ track.name }} <span style="color: grey;">by</span> <span style="font-weight: 600; color: aliceblue;">{{ track.artist.name }}</span> (<span style="color:#DC1B22;">{{ track.playcount }} plays</span>)
+            </li>
+          </div>
         </div>
 
+        <!-- <div class="late-track" v-if="firstTrack && lastTrack">
+          You left 2024 behind listening to:
+          <div class="early-track-entry">{{ lastTrack.name }} by {{ lastTrack.artist['#text'] }}</div>
+        </div> -->
+
         <div class="top-artists" v-if="topArtists.length">
-          Top 25 Artists of 2024
+          Top 25 Artists of 2024 FOR {{ this.username }}
           <div class="artist-list">
             <li v-for="(artist, index) in topArtists" :key="index">
-              {{ artist.name }} ({{ artist.playcount }} scrobbles)
+              <span style="font-weight: 600; color: aliceblue;">{{ artist.name }}</span> (<span style="color:#DC1B22;">{{ artist.playcount }} plays</span>)
             </li>
           </div>
         </div>
 
         <div class="top-albums" v-if="topAlbums.length">
-          Top 25 Albums of 2024
+          Top 25 Albums of 2024 FOR {{ this.username }}
           <div class="album-list">
             <li v-for="(album, index) in topAlbums" :key="index">
-              <div class="album-image">
-                <img :src="album.image" :alt="album.name" width="250" height="250" />
-              </div>
               <div>
-                <strong>{{ album.name }}</strong> by {{ album.artist.name }} ({{ album.playcount }} scrobbles)
+                {{ album.name }} <span style="color: grey;">by</span> <span style="font-weight: 600; color: aliceblue;">{{ album.artist.name }}</span> (<span style="color:#DC1B22;">{{ album.playcount }} plays</span>)
               </div>
             </li>
           </div>
         </div>
 
-        <div class="top-tracks" v-if="topTracks.length">
-          Top 25 Tracks of 2024
-          <div class="track-list">
-            <li v-for="(track, index) in topTracks" :key="index">
-              {{ track.name }} by {{ track.artist.name }} ({{ track.playcount }} scrobbles)
-            </li>
-          </div>
-        </div>
+        <div class="album-container">
+  <div class="album-item" v-for="(album, index) in topAlbums" :key="index">
+    <div class="album-image">
+      <img :src="album.image" :alt="album.name" width="200" height="200" />
+    </div>
+  </div>
+</div>
+
+
+
       </div>
     </div>
     <div class="fuzzy-overlay"></div>
@@ -241,13 +249,13 @@ html, body {
   color: rgb(208, 212, 216);
   background-color: transparent;
   font-size: 96px;
-  margin-top: 10px;
+  margin-top: 10%;
 }
 
 .second-title {
   color: rgb(208, 212, 216);
-  font-size: 30px;
-  margin-bottom: 25%;
+  font-size: 20px;
+  margin-bottom: 20%;
 }
 
 .error {
@@ -257,13 +265,17 @@ html, body {
 .artist-list {
   padding-left: 0;
   list-style: none;
+  color: rgb(208, 212, 216);
+  font-size: 50px;
+  margin-top: 3%;
+  padding: 1%;
+  text-transform: uppercase;
+  text-align: end;
 }
 
 .artist-list li {
   counter-increment: item;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
 }
 
 .artist-list li::before {
@@ -272,50 +284,81 @@ html, body {
   margin-right: 10px;
 }
 
+.top-artists {
+  font-size: 60px;
+  color: rgb(255, 255, 255);
+  margin-top: 3%;
+  text-transform: uppercase;
+  text-align: end;
+}
+
+.top-albums {
+  font-size: 60px;
+  color: rgb(255, 255, 255);
+  margin-top: 3%;
+  text-transform: uppercase;
+}
+
 .album-list {
   padding-left: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
+  color: rgb(208, 212, 216);
+  text-transform: uppercase;
+  font-size: 45px;
+  margin-top: 3%;
+  padding: 1%;
+
 }
 
 .album-list li {
   counter-increment: item;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  padding: 2%;
+  color: rgb(208, 212, 216);
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
 .album-list li::before {
   content: counters(item, ".") ". ";
   font-weight: bold;
   margin-right: 10px;
+  text-transform: uppercase;
 }
 
 .album-image {
   display: flex;
 }
 
+.top-tracks {
+  font-size: 60px;
+  color: rgb(255, 255, 255);
+  margin-top: 3%;
+  text-transform: uppercase;
+}
+
 .track-list {
-  padding-left: 0;
+  padding-left: 1;
   list-style: none;
+  color: rgb(208, 212, 216);
+  font-size: 50px;
+  margin-top: 3%;
+  padding: 1%;
 }
 
 .track-list li {
   counter-increment: item;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
 }
 
 .track-list li::before {
   content: counters(item, ".") ". ";
   font-weight: bold;
   margin-right: 10px;
+}
+
+.late-track {
+  color: rgb(208, 212, 216);
 }
 
 .entry-form {
@@ -331,11 +374,12 @@ html, body {
 
 .loading-screen {
   text-align: center;
-  margin-top: 20px;
   z-index: 20;
-  height: 95vh;
-  font-size: 70px;
+  height: 100vh;
+  padding-top: 10%;
+  font-size: 85px;
   color: rgb(208, 212, 216);
+  animation: blink 2s infinite;
 }
 
 .fuzzy-overlay {
@@ -375,6 +419,26 @@ html, body {
   z-index: 20;
 }
 
+.album-container {
+  display: grid;
+  grid-template-columns: repeat(5, .5fr); 
+  gap: 20px; 
+  justify-items: center;
+  padding: 20px;
+}
+
+.album-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.801) 0px 5px 30px;
+}
+
+.album-image img {
+  width: 100%;
+  height: auto;
+}
+
 
 
 @keyframes blink {
@@ -385,14 +449,21 @@ html, body {
 
 
 input[type="text"] {
-  width: 50%; 
-  height: 40px; 
-  padding: 10px; 
-  font-size: 20px; 
-  text-align: center;
-  border: 1px solid rgb(208, 212, 216);
-  border-radius: 5px; 
-  box-sizing: border-box; 
+
+  width: 30%;
+  color: rgb(36, 35, 42);
+  font-size: 16px;
+  line-height: 20px;
+  min-height: 28px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  background: rgb(251, 251, 251);
+  transition: all 0.1s ease 0s;
+  :focus{
+    border: 2px solid rgb(132, 135, 160);
+  }              
 }
 
 .submit {
