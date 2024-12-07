@@ -18,7 +18,7 @@
       </div>
 
       <div v-if="loading">
-        <div class="loading-screen">HANG ON TIGHT. WE ARE DIGGING FOR FIRE</div>
+        <div class="loading-screen">HANG ON TIGHT. WE ARE DIGGING FOR FIRE.</div>
       </div>
 
       <div v-if="showResults && !loading">
@@ -255,7 +255,7 @@ html, body {
 .second-title {
   color: rgb(208, 212, 216);
   font-size: 20px;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
 }
 
 .error {
@@ -402,6 +402,7 @@ html, body {
   font-size: 60px;
   color: rgb(208, 212, 216);
   padding: .5%;
+  animation: blink .00001s infinite;
 }
 
 .play {
