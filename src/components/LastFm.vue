@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div v-if="!loading && !showResults" class="pause">PAUSE&#9208;</div>
+    <div v-if="!loading && !showResults" class="pause">PAUSE</div>
     <div class="status">
-      <div v-if="loading" class="rewind">REWIND &#9198;</div>
-      <div v-if="showResults && !loading" class="play">PLAY &#9654;</div>
+      <div v-if="loading" class="rewind">REWIND</div>
+      <div v-if="showResults && !loading" class="play">PLAY</div>
       <div class="top-right-text">{{ formattedTime }}</div>
     </div>
     <div class="content main">
@@ -502,7 +502,7 @@ font-size: 12px;
 
 .pause {
   font-size: 25px;
-  margin-left: 1%
+  padding: 2.23%;
 }
 
 .top-right-text {
@@ -516,14 +516,14 @@ font-size: 12px;
 .rewind {
   font-size: 25px;
   color: rgb(208, 212, 216);
-  margin-left: 1%;
+  padding: 2.23%;
   animation: blink .00001s infinite;
 }
 
 .play {
   font-size: 25px;
   color: rgb(208, 212, 216);
-  margin-left: 1%;
+  padding: 2.23%;
 }
 
 .loading-screen {
