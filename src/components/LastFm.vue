@@ -249,7 +249,7 @@ html, body {
   color: rgb(208, 212, 216);
   background-color: transparent;
   font-size: 96px;
-  margin-top: 10%;
+  margin-top: 30%;
 }
 
 .second-title {
@@ -333,7 +333,7 @@ html, body {
 .top-tracks {
   font-size: 60px;
   color: rgb(255, 255, 255);
-  margin-top: 3%;
+  margin-top: 10%;
   text-transform: uppercase;
 }
 
@@ -394,21 +394,27 @@ html, body {
 .pause {
   font-size: 60px;
   color: rgb(208, 212, 216);
-  padding: .5%;
+  position: absolute;
+  top: 20px;
+  left: 20px;
   animation: blink 2s infinite;
 }
 
 .rewind {
   font-size: 60px;
   color: rgb(208, 212, 216);
-  padding: .5%;
+  position: absolute;
+  top: 20px;
+  left: 20px;
   animation: blink .00001s infinite;
 }
 
 .play {
   font-size: 60px;
   color: rgb(208, 212, 216);
-  padding: .5%;
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 
 .top-right-text {
@@ -502,7 +508,8 @@ font-size: 12px;
 
 .pause {
   font-size: 25px;
-  padding: 2.23%;
+  top: 6.5px;
+  left: 10px;
 }
 
 .top-right-text {
@@ -516,14 +523,16 @@ font-size: 12px;
 .rewind {
   font-size: 25px;
   color: rgb(208, 212, 216);
-  padding: 2.23%;
+  top: 6.5px;
+  left: 10px;
   animation: blink .00001s infinite;
 }
 
 .play {
   font-size: 25px;
   color: rgb(208, 212, 216);
-  padding: 2.23%;
+  top: 6.5px;
+  left: 10px;
 }
 
 .loading-screen {
@@ -534,6 +543,7 @@ font-size: 12px;
 
 .top-tracks {
   font-size: 20px;
+  margin-top: 20%;
 }
 
 .track-list {
