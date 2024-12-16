@@ -485,7 +485,7 @@ input[type="text"] {
 @media screen and (max-width: 600px) {
 
   .title {
-  font-size: 50px;
+  font-size: 30px;
   margin-top: 75%;
 }
 
@@ -496,36 +496,34 @@ input[type="text"] {
 }
 
 input[type="text"] {
-
 width: 100%;
-font-size: 20px;     
+font-size: 12px;     
 }
 
 .pause {
-  font-size: 30px;
-  padding: 1.5%;
+  font-size: 25px;
+  margin-left: 1%
 }
 
 .top-right-text {
-  top: 10px;
-  right: 20px;
-  font-size: 30px;
+  top: 6.5px;
+  right: 10px;
+  font-size: 25px;
   color: rgb(208, 212, 216);
   z-index: 20;
 }
 
 .rewind {
-  font-size: 30px;
+  font-size: 25px;
   color: rgb(208, 212, 216);
-  padding: .5%;
+  margin-left: 1%;
   animation: blink .00001s infinite;
 }
 
-
 .play {
-  font-size: 30px;
+  font-size: 25px;
   color: rgb(208, 212, 216);
-  padding: .5%;
+  margin-left: 1%;
 }
 
 .loading-screen {
