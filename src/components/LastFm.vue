@@ -502,7 +502,8 @@ font-size: 20px;
 }
 
 .pause {
-  font-size: 40px;
+  font-size: 30px;
+  padding: 1.5%;
 }
 
 .top-right-text {
